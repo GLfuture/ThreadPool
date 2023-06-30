@@ -21,12 +21,6 @@ private:
         std::function<void()> __Func; // 任务函数
     };
 
-    void Create(uint32_t num){
-        terminate.store(0,std::memory_order_relaxed); 
-        threads.assign(0,NULL);
-        Threads_Create(num);
-    }
-
     void Run()
     {
         while (1)
@@ -73,9 +67,18 @@ private:
     }
 
 public:
-    ThreadPool(uint32_t num = 4)
+    ThreadPool(){}
+
+    ThreadPool(uint32_t num)
     {
         Create(num);
+    }
+
+
+    void Create(uint32_t num){
+        terminate.store(0,std::memory_order_relaxed); 
+        threads.assign(0,NULL);
+        Threads_Create(num);
     }
 
     template<typename F,typename ...Args>
